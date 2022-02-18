@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.transactions.DetailFragment">
+    android:orientation="vertical"
+    tools:context=".ui.transactions.detail.DetailFragment">
 
     <TextView
+        android:id="@+id/detail_sku"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"
+        android:text="sku" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/detail_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="amount" />
+
+    <TextView
+        android:id="@+id/detail_currency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="currency" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

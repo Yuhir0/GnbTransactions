@@ -18,6 +18,7 @@ class App : Application() {
                 apiService,
                 useCase,
                 viewModel,
+                utils
             )
         }
     }

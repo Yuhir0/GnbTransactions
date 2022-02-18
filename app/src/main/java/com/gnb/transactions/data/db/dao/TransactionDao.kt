@@ -9,11 +9,11 @@ import com.gnb.transactions.models.Transaction
 @Dao
 interface TransactionDao {
     @Query("SELECT * FROM `transaction`")
-    fun getAll(): List<Transaction>
+    suspend fun getAll(): List<Transaction>
 
     @Insert
-    fun insertAll(vararg transactions: Transaction)
+    suspend fun insertAll(vararg transactions: Transaction)
 
     @Delete
-    fun deleteAll(vararg transactions: Transaction)
+    suspend fun deleteAll(vararg transactions: Transaction)
 }

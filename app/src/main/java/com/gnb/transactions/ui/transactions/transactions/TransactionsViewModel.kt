@@ -1,4 +1,4 @@
-package com.gnb.transactions.viwmodels
+package com.gnb.transactions.ui.transactions.transactions
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
