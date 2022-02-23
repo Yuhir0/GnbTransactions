@@ -4,41 +4,44 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gnb.transactions.R
 import com.gnb.transactions.domain.RatesUseCase
+import com.gnb.transactions.domain.TransactionsUseCase
 import com.gnb.transactions.models.Rate
-import com.gnb.transactions.ui.transactions.transactions.TransactionsFragment
+import com.gnb.transactions.ui.transactions.products.ProductsFragment
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 class TransactionsActivity : AppCompatActivity() {
+
+    private val logLabel = this::class.simpleName
     private val rateUseCase: RatesUseCase by inject { parametersOf(this) }
+    private val transactionsUseCase: TransactionsUseCase by inject { parametersOf(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        loadRates()
+
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, TransactionsFragment.newInstance())
+            .replace(R.id.fragment_container, ProductsFragment.newInstance())
             .commit()
-
-        loadRates()
-    }
-
-    private suspend fun saveRates(rates: List<Rate>) = withContext(Dispatchers.IO) {
-        rateUseCase.removeAll(*rateUseCase.getAllRates().toTypedArray())
-        rateUseCase.saveRates(*rates.toTypedArray())
     }
 
     private fun loadRates() {
         val rates = rateUseCase.loadRates()
-        rates.observe(this, { rates ->
+        rates.observe(this, {
             GlobalScope.launch(Dispatchers.IO) {
-                saveRates(rates)
+                saveRates(it)
             }
         })
+    }
+
+    private suspend fun saveRates(rates: List<Rate>) = withContext(Dispatchers.IO) {
+        rateUseCase.saveRates(*rates.toTypedArray())
     }
 }

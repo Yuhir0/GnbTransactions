@@ -8,7 +8,7 @@ import com.gnb.transactions.data.db.dao.TransactionDao
 import com.gnb.transactions.domain.RatesUseCase
 import com.gnb.transactions.domain.TransactionsUseCase
 import com.gnb.transactions.ui.transactions.detail.DetailViewModel
-import com.gnb.transactions.ui.transactions.transactions.TransactionsViewModel
+import com.gnb.transactions.ui.transactions.products.ProductsViewModel
 import com.gnb.transactions.utils.CurrencyConversion
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -45,7 +45,7 @@ val apiService = module {
 }
 
 val viewModel = module {
-    viewModel { TransactionsViewModel(androidApplication(), get()) }
+    viewModel { ProductsViewModel(androidApplication(), get()) }
     viewModel { DetailViewModel(androidApplication(), get(), get()) }
 }
 

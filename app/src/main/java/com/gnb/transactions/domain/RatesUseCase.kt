@@ -36,7 +36,7 @@ class RatesUseCase (
     }
 
     suspend fun saveRates(vararg rates: Rate) {
-        rateDao.insertAll(*rates)
+        rateDao.clearAndInsertAll(*rates)
     }
 
     suspend fun getAllRates(): List<Rate> {
@@ -57,10 +57,6 @@ class RatesUseCase (
 
     suspend fun saveNewRate(rate: Rate) {
         rateDao.insert(rate)
-    }
-
-    suspend fun removeAll(vararg rates: Rate) {
-        rateDao.deleteAll(*rates)
     }
 
 }

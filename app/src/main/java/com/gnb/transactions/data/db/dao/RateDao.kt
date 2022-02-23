@@ -1,9 +1,6 @@
 package com.gnb.transactions.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.gnb.transactions.models.Rate
 
 @Dao
@@ -27,5 +24,14 @@ interface RateDao {
     suspend fun insertAll(vararg rates: Rate)
 
     @Delete
-    suspend fun deleteAll(vararg rates: Rate)
+    suspend fun delete(vararg rates: Rate)
+
+    @Query("DELETE FROM `rate`")
+    fun deleteAll()
+
+    @Transaction
+    suspend fun clearAndInsertAll(vararg rates: Rate) {
+        deleteAll()
+        insertAll(*rates)
+    }
 }

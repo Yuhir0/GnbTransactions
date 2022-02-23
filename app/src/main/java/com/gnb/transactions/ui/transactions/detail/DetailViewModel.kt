@@ -1,33 +1,49 @@
 package com.gnb.transactions.ui.transactions.detail
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.gnb.transactions.domain.RatesUseCase
-import com.gnb.transactions.models.Currency
+import androidx.lifecycle.viewModelScope
+import com.gnb.transactions.domain.TransactionsUseCase
+import com.gnb.transactions.models.Transaction
 import com.gnb.transactions.utils.CurrencyConversion
+import com.gnb.transactions.utils.round
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DetailViewModel (
     appContext: Application,
-    private val ratesUseCase: RatesUseCase,
+    private val transactionsUseCase: TransactionsUseCase,
     private val currencyConversion: CurrencyConversion
 ) : AndroidViewModel(appContext) {
 
     private val logLabel = this::class.simpleName
+    private val sumCurrency = "EUR"
 
-    val conversionList = MutableLiveData<List<Currency>>()
+    val transactions = MutableLiveData<List<Transaction>>()
+    val total = MutableLiveData<Float>()
 
-    suspend fun conversion(from: String, amount: Float) = withContext(Dispatchers.IO) {
-        val currencies = ratesUseCase.getDistinctCurrencyExcluding(from)
-        Log.d(logLabel, currencies.toString())
-        val converted = ArrayList<Currency>()
-        for (currency in currencies) {
-            val rate = currencyConversion.calculateConversion(from, currency, amount)
-            converted.add(Currency(currency, rate*amount))
+    suspend fun loadTransactionByProduct(product: String) = withContext(Dispatchers.IO){
+        val data = transactionsUseCase.getTransactionsBySku(product)
+        sumTransactionsTotal(data)
+        transactions.postValue(data)
+    }
+
+    private suspend fun sumTransactionsTotal(data: List<Transaction>) {
+        var sum = 0f
+        for (trans in data) {
+            sum += if (trans.currency == sumCurrency){
+                trans.amount
+            } else {
+                val conversion = currencyConversion.searchConversion(trans.currency, sumCurrency)
+                trans.amount * conversion
+            }
         }
-        conversionList.postValue(converted)
+        total.postValue(round(sum, 2))
+    }
+
+    fun launchLoadData(product: String) = viewModelScope.launch {
+        loadTransactionByProduct(product)
     }
 }

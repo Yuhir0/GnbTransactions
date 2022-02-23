@@ -6,21 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gnb.transactions.databinding.DetailFragmentBinding
-import com.gnb.transactions.models.Transaction
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment() {
 
     companion object {
-        private const val TRANSACTION_KEY = "transaction"
+        private const val PRODUCT_KEY = "product"
 
-        fun newInstance(transaction: Transaction): DetailFragment {
+        fun newInstance(product: String): DetailFragment {
             val fragment = DetailFragment()
             fragment.arguments = Bundle()
-            fragment.requireArguments().putParcelable(TRANSACTION_KEY, transaction)
+            fragment.requireArguments().putString(PRODUCT_KEY, product)
             return fragment
         }
     }
@@ -31,37 +30,45 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: DetailViewModel by viewModel()
-
-    lateinit var transaction: Transaction
+    private var _adapter: DetailAdapter? = null
+    private val adapter get() = _adapter!!
+    lateinit var product: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val args = requireArguments()
-        transaction = args.getParcelable(TRANSACTION_KEY)!!
+        product = args.getString(PRODUCT_KEY)!!
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        launchCoroutines()
-
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
-        binding.detailSku.text = transaction.sku
-        binding.detailAmount.text = transaction.amount.toString()
-        binding.detailCurrency.text = transaction.currency
+        _adapter = DetailAdapter()
 
-        viewModel.conversionList.observe(viewLifecycleOwner, { currencies ->
-            Log.d(logLabel, currencies.toString())
+        viewModel.launchLoadData(product)
+
+        viewModel.transactions.observe(viewLifecycleOwner, {
+            Log.d(logLabel, it.toString())
+            adapter.addTransactions(it)
+        })
+
+        binding.productSelected.text = product
+        prepareRecycle(binding.detailTransactionsRecycler)
+
+        viewModel.total.observe(viewLifecycleOwner, {
+            Log.d(logLabel, it.toString())
+            binding.transactionTotal.text = it.toString()
         })
 
         return binding.root
     }
 
-    private fun launchCoroutines() {
-        lifecycleScope.launch {
-            Log.d(logLabel, "Launch coroutine")
-            viewModel.conversion(transaction.currency, transaction.amount)
-        }
+    private fun prepareRecycle(recycler: RecyclerView) {
+        val llm = LinearLayoutManager(context)
+        llm.orientation = LinearLayoutManager.VERTICAL
+        recycler.layoutManager = llm
+        recycler.adapter = adapter
     }
 }

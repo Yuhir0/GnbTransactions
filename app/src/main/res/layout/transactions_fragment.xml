@@ -5,15 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.transactions.transactions.TransactionsFragment">
+    tools:context=".ui.transactions.products.ProductsFragment">
+
+    <EditText
+        android:id="@+id/search_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/products_recycler"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/search_hint"
+        android:padding="10dp"
+        android:layout_margin="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/transactions_recycler"
+        android:id="@+id/products_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/search_product" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

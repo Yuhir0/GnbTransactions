@@ -16,17 +16,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // TODO: Make fullscreen SplashScreen
 
-        // TODO: Get Rates
-        // TODO: Store Rates
-
-        // TODO: Get Transactions
-        // TODO: Store Transactions
-
-        // TODO: Open ui.transactions.TransactionActivity
-
-        // TODO: Animate
         startActivity(Intent(this, TransactionsActivity::class.java))
     }
 
