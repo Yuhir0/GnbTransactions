@@ -8,22 +8,17 @@ class CurrencyConversion(private val ratesUseCase: RatesUseCase) {
 
     private val logLabel = this::class.simpleName
 
-    suspend fun calculateConversion(from: String, to: String, amount: Float): Float {
-        Log.d(logLabel, "calculateConversion")
-        return searchConversion(from, to) * amount
-    }
-
-    suspend fun searchConversion(from: String, to: String): Float {
+    suspend fun searchConversion(from: String, to: String): Double {
         Log.d(logLabel, "searchConversion")
-        return round(ratesUseCase.getRate(from, to)?.rate ?: searchIndirectConversion(from, to), 2)
+        return roundHalfToEven(ratesUseCase.getRate(from, to)?.rate ?: searchIndirectConversion(from, to), 2)
     }
 
-    private suspend fun searchIndirectConversion(from: String, to: String): Float {
+    private suspend fun searchIndirectConversion(from: String, to: String): Double {
         Log.d(logLabel, "searchIndirectConversion -> to: $to, from: $from")
 
         var usedCurrency = ArrayList<String>()
         var findNext = to;
-        var conversion = 1f
+        var conversion = 1.0
         do {
             usedCurrency.add(findNext)
             val rate = ratesUseCase.getRatesByTo(findNext, usedCurrency).first()

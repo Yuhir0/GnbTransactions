@@ -35,7 +35,7 @@ class ProductsViewModel (
     @RequiresApi(Build.VERSION_CODES.N)
     fun searchProduct(product: String): List<String> {
         return products.value!!.stream().filter {
-            it.contains(product)
+            it.lowercase().contains(product.lowercase())
         }.toList()
     }
 }

@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class Rate(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val from: String,
-    val rate: Float,
+    val rate: Double,
     val to: String
 ) : Parcelable {
     override fun toString(): String {

@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class Transaction (
     @PrimaryKey(autoGenerate = true) val id: Int,
     val sku: String,
-    val amount: Float,
+    val amount: Double,
     val currency: String
 ) : Parcelable {
     override fun toString(): String {

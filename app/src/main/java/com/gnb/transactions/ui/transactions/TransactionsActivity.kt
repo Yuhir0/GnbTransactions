@@ -1,12 +1,14 @@
 package com.gnb.transactions.ui.transactions
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.gnb.transactions.R
 import com.gnb.transactions.domain.RatesUseCase
 import com.gnb.transactions.domain.TransactionsUseCase
 import com.gnb.transactions.models.Rate
 import com.gnb.transactions.ui.transactions.products.ProductsFragment
+import com.gnb.transactions.utils.roundHalfToEven
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,6 +27,8 @@ class TransactionsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         loadRates()
+
+        Log.d(logLabel, "######################### ${roundHalfToEven(19.881234123121231242342, 2)}")
 
         supportFragmentManager
             .beginTransaction()

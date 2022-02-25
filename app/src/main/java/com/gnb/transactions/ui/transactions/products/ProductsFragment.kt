@@ -1,6 +1,5 @@
 package com.gnb.transactions.ui.transactions.products
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,11 +8,10 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gnb.transactions.R
-import com.gnb.transactions.databinding.TransactionsFragmentBinding
+import com.gnb.transactions.databinding.ProductsFragmentBinding
 import com.gnb.transactions.ui.transactions.detail.DetailFragment
 import com.gnb.transactions.utils.OnClickItemListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProductsFragment : Fragment() {
 
     private val logLabel = this::class.simpleName
-    private var _binding: TransactionsFragmentBinding? = null
+    private var _binding: ProductsFragmentBinding? = null
     private val binding get() = _binding!!
 
     companion object {
@@ -38,8 +36,9 @@ class ProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = TransactionsFragmentBinding.inflate(inflater, container, false)
+        _binding = ProductsFragmentBinding.inflate(inflater, container, false)
         _adapter = ProductsAdapter(onClickItem())
+        binding.progressBar.visibility = View.VISIBLE
         viewModel.launchDataLoad()
 
         binding.searchProduct.addTextChangedListener {
@@ -50,16 +49,16 @@ class ProductsFragment : Fragment() {
         viewModel.products.observe(viewLifecycleOwner, {
             adapter.replaceData(
                 viewModel.searchProduct(binding.searchProduct.text.toString()))
+            binding.progressBar.visibility = View.GONE
         })
 
         return binding.root
     }
 
     private fun prepareRecycler(recycler: RecyclerView) {
-        val llm = LinearLayoutManager(context)
-        llm.orientation = LinearLayoutManager.VERTICAL
-        recycler.layoutManager = llm
-        recycler.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        val viewManager = LinearLayoutManager(context)
+        viewManager.orientation = LinearLayoutManager.VERTICAL
+        recycler.layoutManager = viewManager
         recycler.adapter = adapter
     }
 

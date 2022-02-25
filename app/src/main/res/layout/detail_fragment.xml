@@ -11,32 +11,34 @@
         android:id="@+id/product_selected"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        style="@style/Header1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/transaction_total_label"
         app:layout_constraintVertical_chainStyle="packed"
-        android:gravity="top|center_horizontal"
-        android:padding="20dp"
-        android:layout_marginTop="50dp"/>
+        android:gravity="top"
+        android:padding="16dp"/>
 
     <TextView
         android:id="@+id/transaction_total_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/total"
+        android:text="@string/transactions"
+        style="@style/Header2"
         app:layout_constraintTop_toBottomOf="@id/product_selected"
         app:layout_constraintBottom_toTopOf="@id/detail_transactions_recycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/transaction_total"
         app:layout_constraintVertical_chainStyle="packed"
-        android:gravity="end"
-        android:padding="20dp"/>
+        android:gravity="start|center_vertical"
+        android:padding="16dp"/>
 
     <TextView
         android:id="@+id/transaction_total"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        style="@style/Header2"
         app:layout_constraintTop_toBottomOf="@id/product_selected"
         app:layout_constraintBottom_toTopOf="@id/detail_transactions_recycler"
         app:layout_constraintStart_toEndOf="@id/transaction_total_label"
@@ -47,15 +49,17 @@
 
     <TextView
         android:id="@+id/transaction_total_currency"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
+        style="@style/Header2"
         android:text="@string/curr_eur"
         app:layout_constraintTop_toBottomOf="@id/product_selected"
         app:layout_constraintBottom_toTopOf="@id/detail_transactions_recycler"
         app:layout_constraintStart_toEndOf="@id/transaction_total"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        android:paddingVertical="20dp"/>
+        android:paddingVertical="20dp"
+        android:layout_marginEnd="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/detail_transactions_recycler"
@@ -67,5 +71,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

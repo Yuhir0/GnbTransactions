@@ -47,6 +47,8 @@ class DetailFragment : Fragment() {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         _adapter = DetailAdapter()
 
+        binding.progressBar.visibility = View.VISIBLE
+
         viewModel.launchLoadData(product)
 
         viewModel.transactions.observe(viewLifecycleOwner, {
@@ -60,15 +62,16 @@ class DetailFragment : Fragment() {
         viewModel.total.observe(viewLifecycleOwner, {
             Log.d(logLabel, it.toString())
             binding.transactionTotal.text = it.toString()
+            binding.progressBar.visibility = View.GONE
         })
 
         return binding.root
     }
 
     private fun prepareRecycle(recycler: RecyclerView) {
-        val llm = LinearLayoutManager(context)
-        llm.orientation = LinearLayoutManager.VERTICAL
-        recycler.layoutManager = llm
+        val viewManager = LinearLayoutManager(context)
+        viewManager.orientation = LinearLayoutManager.VERTICAL
+        recycler.layoutManager = viewManager
         recycler.adapter = adapter
     }
 }

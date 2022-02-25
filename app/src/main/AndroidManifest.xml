@@ -14,7 +14,8 @@
         android:theme="@style/Theme.GNBTransactions">
         <activity
             android:name=".ui.transactions.TransactionsActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

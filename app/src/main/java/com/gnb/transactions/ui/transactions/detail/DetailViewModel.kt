@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.gnb.transactions.domain.TransactionsUseCase
 import com.gnb.transactions.models.Transaction
 import com.gnb.transactions.utils.CurrencyConversion
-import com.gnb.transactions.utils.round
+import com.gnb.transactions.utils.roundHalfToEven
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,7 +22,7 @@ class DetailViewModel (
     private val sumCurrency = "EUR"
 
     val transactions = MutableLiveData<List<Transaction>>()
-    val total = MutableLiveData<Float>()
+    val total = MutableLiveData<Double>()
 
     suspend fun loadTransactionByProduct(product: String) = withContext(Dispatchers.IO){
         val data = transactionsUseCase.getTransactionsBySku(product)
@@ -31,7 +31,7 @@ class DetailViewModel (
     }
 
     private suspend fun sumTransactionsTotal(data: List<Transaction>) {
-        var sum = 0f
+        var sum = .0
         for (trans in data) {
             sum += if (trans.currency == sumCurrency){
                 trans.amount
@@ -40,7 +40,7 @@ class DetailViewModel (
                 trans.amount * conversion
             }
         }
-        total.postValue(round(sum, 2))
+        total.postValue(roundHalfToEven(sum, 2))
     }
 
     fun launchLoadData(product: String) = viewModelScope.launch {

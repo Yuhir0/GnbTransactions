@@ -1,9 +1,8 @@
 package com.gnb.transactions.utils
 
-import kotlin.math.roundToInt
+import java.math.BigDecimal
 
 
-fun round(value: Float, decimals: Int): Float {
-    val rounder = 10f * decimals
-    return (value * rounder).roundToInt() / rounder
+fun roundHalfToEven(x: Double, decimals: Int): Double {
+    return BigDecimal(x).setScale(decimals, BigDecimal.ROUND_HALF_EVEN).toDouble()
 }
